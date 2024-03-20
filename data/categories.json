@@ -1,0 +1,12 @@
+[
+    {"name": "Footwear", "description": "This is footwear"},
+    {"name": "Clothing", "description": "This is clothing"},
+    {"name": "Electronic", "description": "This is electronic"},
+    {"name": "Furniture", "description": "This is furniture"},
+    {"name": "Grocery", "description": "This is grocery"},
+    {"name": "Stationary", "description": "This is stationary"},
+    {"name": "Toys", "description": "This is toys"},
+    {"name": "Sports", "description": "This is sports"},
+    {"name": "Books", "description": "Books, all type of books"},
+    {"name": "Others", "description": "This is others"}
+]

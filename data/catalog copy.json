@@ -1,0 +1,57 @@
+{
+    "books": {
+      "name": "Books",
+      "description": "Only technical books",
+      "products": [
+        {
+          "name": "Python Crash Course: A Hands-On, Project-Based Introduction to Programming",
+          "author": "Eric Matthes",
+          "description": "Python Crash Course is a fast-paced, and excellent book to start learning Python programming",
+          "price": 44.99
+        },
+        {
+          "name": "Fluent Python: Clear, Concise, and Effective Programming",
+          "author": "Luciano Ramalho",
+          "description": "Fluent Python is a reference book written for experienced Python 2 programmers who want to learn Python 3. ",
+          "price": 19.99
+        },
+        {
+          "name": "Introduction to Machine Learning With Python",
+          "author": "Andreas C. Müller",
+          "description": "Introduction to Machine Learning With Python will teach you how to build your machine-learning solutions using Python and the Scikit-learn library.",
+          "price": 56.99
+        }
+      ]
+    },
+    "clothing": {
+      "name": "Clothing",
+      "description": "Including Jewelry, Jackets, and shoes",
+      "products": [
+        {
+          "name": "AUTOMET Womens Faux Leather Jackets",
+          "author": "AUTOMET",
+          "description": "Fabric: 90%Polyester,10%Spandex. Suede Jackets Features A Plush And Soft Faux Suede Fabric.",
+          "price": 29.99
+        }
+      ]
+    },
+    "toys": {
+      "name": "Lego Collections",
+      "description": "Gabriel's Lego collection",
+      "products": [
+          {
+              "name": "Lego Star Wars Mix of 75342 & 75344",
+              "autor": "Gabriel Lego",
+              "description": "Star Wars from Gabriel's creativity",
+              "price": 18.00
+          },
+          {
+            "name": "Lego Pirate Mix of 1000 & 1001",
+            "autor": "Gabriel Lego",
+            "description": "Pirate scenes from Gabriel's creativity",
+            "price": 18.00
+        }
+      ]
+    }
+  }
+  

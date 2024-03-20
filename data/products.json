@@ -1,0 +1,74 @@
+{
+    "books": [ 
+        {
+            "title": "Python Crash Course: A Hands-On, Project-Based Introduction to Programming",
+            "author": "Eric Matthes",
+            "description": "Python Crash Course is a fast-paced, and excellent book to start learning Python programming",
+            "price": 44.99,
+            "category": "books" 
+        },
+        {
+            "title": "Fluent Python: Clear, Concise, and Effective Programming",
+            "author": "Luciano Ramalho", 
+            "description": "Fluent Python is a reference book written for experienced Python 2 programmers who want to learn Python 3. ", 
+            "price": 19.99,
+            "category": "books"
+        },
+        {
+            "title": "Introduction to Machine Learning With Python",
+            "author": "Andreas C. Müller",
+            "description": "Introduction to Machine Learning With Python will teach you how to build your machine-learning solutions using Python and the Scikit-learn library.",
+            "price": 56.99,
+            "category": "books" 
+        }
+    ],
+    "toys": [
+        {
+            "name": "Lego",
+            "description": "Lego is a line of plastic construction toys that are manufactured by The Lego Group, a privately held company based in Billund, Denmark.",
+            "price": 15.99,
+            "category": "toys"
+        },
+        {
+            "name": "Barbie doll",
+            "description": "Barbie is a fashion doll manufactured by the American toy company Mattel, Inc. and launched in March 1959.",
+            "price": 19.99,
+            "category": "toys"
+        },
+        {
+            "name": "Hot Wheels blue shark",
+            "description": "Hot Wheels is a brand of die-cast toy cars introduced by American toy maker Mattel in 1968.",
+            "price": 9.99,
+            "category": "toys"
+        }
+
+    ],
+    "jackets" : [
+        {
+            "name":"AUTOMET Womens Faux Leather Jackets",
+            "description": "Fabric: 90%Polyester,10%Spandex. Suede Jackets Features A Plush And Soft Faux Suede Fabric.",
+            "price": 29.99
+        }
+
+    ],
+
+    "footwear": [
+        {
+            "name": "Nike Air Max 270",
+            "description": "The Nike Air Max 270 is inspired by two icons of big Air: the Air Max 180 and Air Max 93. It features Nike’s biggest heel Air unit yet for a super-soft ride that feels as impossible as it looks.",
+            "price": 150.00
+        },
+        {  
+            "name": "Nike Air Max 97",
+            "description": "The Nike Air Max 97 reimagines an iconic running shoe into everyday kicks for kids. With classic water ripple-inspired lines, Max Air cushioning and a durable design, it’s all about bringing a ‘90s fave to a new generation.",
+            "price": 150.00
+        },
+        {
+            "name": "Nike Air Max 90",
+            "description": "The Nike Air Max 90 stays true to its OG running roots with the iconic Waffle outsole, stitched overlays and classic TPU accents. Fresh colors give a modern look while Max Air cushioning adds comfort to your journey.",
+            "price": 120.00
+        }
+    ]
+
+
+}
