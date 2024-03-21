@@ -257,12 +257,12 @@ def add_item(email, db,category_name, item_name, price):
 
 
 
-def add_to_cart(email, category_name, item_id, db):
-    if category_name not in db.categories or item_id not in db.categories[category_name]:
-        return "Item does not exist."
-    cart.setdefault(email, {}).setdefault(item_id, 0)
-    cart[email][item_id] += 1
-    return "Item added to cart."
+# def add_to_cart(email, category_name, item_id, db):
+#     if category_name not in db.categories or item_id not in db.categories[category_name]:
+#         return "Item does not exist."
+#     cart.setdefault(email, {}).setdefault(item_id, 0)
+#     cart[email][item_id] += 1
+#     return "Item added to cart."
 
 # def remove_from_cart(username, item_name):
 #     if item_name not in cart.get(username, {}):
@@ -278,22 +278,11 @@ def checkout(email, cart):
     return f"Checkout successful. Total amount: {total_amount}"
 
 
-# from models.database import DummyEcommerceDB
-# db = DummyEcommerceDB()
-# from models.database import Category 
-# from models.database import Product
 
-# import ipywidgets as widgets
-# from ipywidgets import HBox
-# import pandas as pd
-
-# from IPython.display import clear_output, display
-
-
-def display_catalog(display: display, catalog, cart, email):
-    btn_products = []
+# def display_catalog(display: display, catalog, cart, email):
+#     btn_products = []
     
-    out = widgets.Output()
+#     out = widgets.Output()
 
 #     @out.capture()
 #     def on_add_clicked(b):
@@ -329,15 +318,15 @@ def display_catalog(display: display, catalog, cart, email):
 #             return
 #         print(f'{item["name"]} ${item["price"]} removed from your cart')
 
-    for key, category in catalog.items():
+    # for key, category in catalog.items():
 #         products = category.pop("products", None)
 #         category = Category(**category)
 #         print_header(f"Category: {category.id} | {category.name} | {category.description}")
 
 #         # Prefix to generate dynamic variables
-        prefix = "btn_" + str(category.id)
+        # prefix = "btn_" + str(category.id)
 
-        for product_data in category['products']:
+        # for product_data in category['products']:
 #             # In theory it isn't neccessary , just to practice more python
 #             product = Product(**product_data)
             
@@ -345,7 +334,7 @@ def display_catalog(display: display, catalog, cart, email):
 #             cb_product = prefix + str(product.id)
 
 #             # Dynamic variable for + button
-            btn_product = prefix + str(product.id)
+            # btn_product = prefix + str(product.id)
 
 #             if product.id not in db.products:
 #                 db.products[product.id] = {**product_data}
