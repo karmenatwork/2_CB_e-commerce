@@ -50,19 +50,10 @@ class DummyEcommerceDB:
         self.users[email] = { "id": new_user_id, "name": name, "email": email, "password": password, "admin": is_admin}
         return True, "User registered successfully.", self.users[email]
 
-    def add_category(email, category_name, description):
+    def add_category(self, email, category_name, description):
         categories = self.categories
         category_key = "_".join(category_name.lower().split())
         if category_key in categories:
             return "Category already exists."
         categories[category_key] = {"name": category_name, "description": description}
         return True, "Category added successfully.", self.categories
-
-    # Ideally it should be in another file 
-    # def login(self, email, password):
-    #     #print("Login user with email: ", email)
-
-    #     if email in self.users and self.users[email]['password'] == password:
-    #         return self.users[email]
-    #     else:
-    #         return False
