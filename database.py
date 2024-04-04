@@ -17,7 +17,7 @@ class User:
         return self.__dict__.items()
     
 class Admin:
-    def __init__(self, email, password):
+    def __init__(self, id, email, password):
         self.email = email
         self.password = password       
     
@@ -45,5 +45,46 @@ class DummyEcommerceDB:
         self.categories = {}
         self.products = {}
         self.user_id_counter = 1
+        self.admin_id_counter = 1
         self.category_id_counter = 1
         self.product_id_counter = 1
+
+
+    def add_user(self, email, password, user_type="user", **kwargs):
+        admin = 1 if user_type == "admin" else 0
+        if email in self.users:
+            # print(f"User {email} already exists")
+            return False, f"User {email} already exists"
+        
+        self.users[email] = User(self.user_id_counter,email, password, admin, **kwargs)
+        self.user_id_counter += 1
+        if user_type == "admin":
+            self.add_admin(email, password)
+
+        return True, f"User {email} added successfully"
+
+    def add_admin(self, email, password):
+        if email in self.admins:
+            # print(f"Admin {email} already exists")
+            return False, f"Admin {email} already exists"
+        
+        self.admins[email] = Admin(self.admin_id_counter, email, password)
+        self.admin_id_counter += 1
+        return True
+
+db = DummyEcommerceDB()
+# Adding just user
+db.add_user("user@test.com", "userpass", "user", name = "Bianca")
+print(db.users["user@test.com"].__dict__)
+# Adding just admin
+db.add_admin("admin1@test.com", "adminpass1")
+print(db.admins["admin1@test.com"].__dict__)
+# Adding user that is an admin too
+db.add_user("admin2@test.com", "adminpass2", "admin", name = "Juan")
+print(db.admins["admin2@test.com"].__dict__)
+
+print(list(db.users.keys()))
+print(list(db.admins.keys()))
+# Already exists
+print(db.add_user("admin2@test.com", "adminpass2", "admin", name = "Juan"))
+print(db.add_admin("admin1@test.com", "adminpass1"))
