@@ -1,10 +1,13 @@
 import json
 
 def print_header(title):
-    print("="* 80)
-    print(title)
-    print("="* 80)
+    header = f"{'='* 80 }\n"
+    header += f"{title}\n"
+    header += f"{'='* 80 }"
+    return header
 
+def print_divider():
+    return f"{'=' * 80}\n"
 
 def load_users(users = {}):
     print("Loading demo users from JSON file ... \n")
@@ -111,11 +114,6 @@ def load_catalog(db):
 
     # print(f"Total demo categories: {len(db.categories)} - Total demo products: {len(db.products)}\n")
     return({'catalog': db.catalogs, "categories": db.categories, "products": db.products})
-
-def add_product(db, product):
-    print("Adding products")
-    product_id = product["id"] 
-    db.products 
 
 
 def register(name, email, password, users={}, is_admin=0):
@@ -256,7 +254,6 @@ def add_item(email, db,category_name, item_name, price):
         #     db.products[str(prod_idx)] = {**product_data}
 
 
-
 # def add_to_cart(email, category_name, item_id, db):
 #     if category_name not in db.categories or item_id not in db.categories[category_name]:
 #         return "Item does not exist."
@@ -270,91 +267,9 @@ def add_item(email, db,category_name, item_name, price):
 #     del cart[username][item_name]
 #     return "Item removed from cart."
 
-def checkout(email, cart):
+def checkout(email, cart, categories):
     if email not in cart or not cart[email]:
         return "Cart is empty."
     total_amount = sum(categories[category_name][item_name] * quantity for category_name in categories for item_name, quantity in cart[username].items())
     cart[email] = {}  # Reset cart
     return f"Checkout successful. Total amount: {total_amount}"
-
-
-
-# def display_catalog(display: display, catalog, cart, email):
-#     btn_products = []
-    
-#     out = widgets.Output()
-
-#     @out.capture()
-#     def on_add_clicked(b):
-#         # print(f'clicked on add: {b.description}')
-#         product_id = b.description
-#         item = db.products[product_id]
-
-#         if email not in cart:
-#             cart[email] = {}
-
-#         if product_id not in cart[email]:
-#             cart[email][product_id] = {"quantity": 1, "name": item["name"], "price": item["price"]}
-#         else:
-#             cart[email][product_id]["quantity"] += 1
-        
-#         item = cart[email][product_id]
-            
-#         print(f'{item["name"]} ${item["price"]} added to your cart')
-
-
-#     @out.capture()
-#     def on_remove_clicked(b):
-#         product_id = b.description
-
-#         if email not in cart:
-#             return
-#         item = cart[email][product_id]
-
-#         if item and item["quantity"] > 0:
-#             item["quantity"] -= 1
-#         else:
-#             print("Item does not exists in cart")
-#             return
-#         print(f'{item["name"]} ${item["price"]} removed from your cart')
-
-    # for key, category in catalog.items():
-#         products = category.pop("products", None)
-#         category = Category(**category)
-#         print_header(f"Category: {category.id} | {category.name} | {category.description}")
-
-#         # Prefix to generate dynamic variables
-        # prefix = "btn_" + str(category.id)
-
-        # for product_data in category['products']:
-#             # In theory it isn't neccessary , just to practice more python
-#             product = Product(**product_data)
-            
-#             # Dynamic variable for checkbox
-#             cb_product = prefix + str(product.id)
-
-#             # Dynamic variable for + button
-            # btn_product = prefix + str(product.id)
-
-#             if product.id not in db.products:
-#                 db.products[product.id] = {**product_data}
-            
-#             print(f"ID: {product.id} -- \n{product.title}")
-#             print(f"by {product.author}")
-#             print(f"$ {product.price}\n {'-'*40}")
-
-        
-#             # trying with buttons
-#             btn_add = btn_product + "add"
-#             btn_del = btn_product + "del"
-#             globals()[btn_add] =  widgets.Button(description=f"{product.id}", tooltip=f"Add {product.id} - {product.title}",value=False, icon='plus')
-#             globals()[btn_del] =  widgets.Button(description=f"{product.id}", tooltip=f"Remove {product.id} - {product.title}",value=False, icon='remove')
-#             btn_products.append({"btn": globals()[btn_add], "product": product})
-
-#             globals()[btn_add].on_click(on_add_clicked, False)
-#             globals()[btn_del].on_click(on_remove_clicked, False)
-
-#             ui = widgets.VBox([widgets.HBox([globals()[btn_add], globals()[btn_del]])])
-#             display(ui)
-
-#     display(out)
