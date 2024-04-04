@@ -27,7 +27,7 @@ class Category:
 class Product:
     def __init__(self, id, name, author, description, price, category_name, category_id):
         self.id = id
-        self.title = name
+        self.name = name
         self.author = author
         self.price = price
         self.description = description
