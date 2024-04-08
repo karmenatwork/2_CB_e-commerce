@@ -236,7 +236,6 @@ def add_category(email, db, category_name, description):
         db.catalogs[category_key] = category_data
     return True, "Category added successfully.", db.categories
 
-
 @must_be_admin
 def add_item(email, db,category_name, item_name, price):
     if category_name not in db.categories:
@@ -252,20 +251,6 @@ def add_item(email, db,category_name, item_name, price):
         #     # print(product_data)
         #     # db.products.append(product_data)
         #     db.products[str(prod_idx)] = {**product_data}
-
-
-# def add_to_cart(email, category_name, item_id, db):
-#     if category_name not in db.categories or item_id not in db.categories[category_name]:
-#         return "Item does not exist."
-#     cart.setdefault(email, {}).setdefault(item_id, 0)
-#     cart[email][item_id] += 1
-#     return "Item added to cart."
-
-# def remove_from_cart(username, item_name):
-#     if item_name not in cart.get(username, {}):
-#         return "Item not in cart."
-#     del cart[username][item_name]
-#     return "Item removed from cart."
 
 def checkout(email, cart, categories):
     if email not in cart or not cart[email]:
