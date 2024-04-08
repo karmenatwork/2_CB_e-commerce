@@ -34,6 +34,18 @@
             "price": 29.99
           }
         ]
+      },
+      "footwear": {
+        "name": "Footwear",
+        "description": "Running and Walking sport shoes",
+        "products": [
+          {
+            "name": "Blue running Man shoes",
+            "author": "",
+            "description": "Runing shoes size 37",
+            "price": 29.99
+          }
+        ]
       }
   }
   

@@ -136,6 +136,6 @@ db = DummyEcommerceDB()
 # print(db.add_admin("admin1@test.com", "adminpass1"))
 
 # Add category and products 
-print(db.add_category("Home Appliances", "Everything you need to make your home comfortable")[1])
-print(db.add_product("Lamp to relax", "Himalayan Pink Lamp", 19.99, 'home_appliances')[1])
-print(db.add_product("Lamp to relax", "Himalayan Pink Lamp", 19.99, 'home')[1])
+# print(db.add_category("Home Appliances", "Everything you need to make your home comfortable")[1])
+# print(db.add_product("Lamp to relax", "Himalayan Pink Lamp", 19.99, 'home_appliances')[1])
+# print(db.add_product("Lamp to relax", "Himalayan Pink Lamp", 19.99, 'home')[1])
