@@ -46,7 +46,7 @@ class DummyEcommerceDB:
         self.products = {}
         self.user_id_counter = 1
         self.admin_id_counter = 1
-        self.category_id_counter = 1
+        self.category_id_counter = 1 
         self.product_id_counter = 1
 
 
@@ -54,28 +54,34 @@ class DummyEcommerceDB:
         admin = 1 if user_type == "admin" else 0
         if email in self.users:
             # print(f"User {email} already exists")
-            return False, f"User {email} already exists"
+            return False, f"User {email} already exists", None
         
-        self.users[email] = User(self.user_id_counter,email, password, admin, **kwargs)
+        user = User(self.user_id_counter,email, password, admin, **kwargs)
+        self.users[email] = user
+        # self.users[email] = User(self.user_id_counter,email, password, admin, **kwargs)
         self.user_id_counter += 1
         if user_type == "admin":
             self.add_admin(email, password)
 
-        return True, f"User {email} added successfully"
+        return True, f"User {email} added successfully", user
 
     def add_admin(self, email, password):
         if email in self.admins:
             # print(f"Admin {email} already exists")
-            return False, f"Admin {email} already exists"
+            return False, f"Admin {email} already exists", None
         
         self.admins[email] = Admin(self.admin_id_counter, email, password)
         self.admin_id_counter += 1
-        return True
+        return True, f"User {email} added successfully", self.admins[email]
+
+      
 
 db = DummyEcommerceDB()
 # Adding just user
-db.add_user("user@test.com", "userpass", "user", name = "Bianca")
-print(db.users["user@test.com"].__dict__)
+db.add_user("user1@test.com", "userpass", "user", name = "Bianca")
+print(db.users["user1@test.com"].__dict__)
+db.add_user("user2@test.com", "userpass")
+print(db.users["user2@test.com"].__dict__)
 # Adding just admin
 db.add_admin("admin1@test.com", "adminpass1")
 print(db.admins["admin1@test.com"].__dict__)
@@ -83,8 +89,9 @@ print(db.admins["admin1@test.com"].__dict__)
 db.add_user("admin2@test.com", "adminpass2", "admin", name = "Juan")
 print(db.admins["admin2@test.com"].__dict__)
 
-print(list(db.users.keys()))
-print(list(db.admins.keys()))
 # Already exists
 print(db.add_user("admin2@test.com", "adminpass2", "admin", name = "Juan"))
 print(db.add_admin("admin1@test.com", "adminpass1"))
+
+
+
