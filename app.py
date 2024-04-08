@@ -50,7 +50,7 @@ class ECommerceApp:
                 return False, "Invalid username or password."
             session_id = str(uuid.uuid4())
             self.sessions[session_id] = users[email]
-            print(f"User {email} logged in successfully. Session ID: {session_id}")
+            print(f"User {email} logged in successfully!")
             return session_id
         elif user_type == 'admin':
             admins = self.db.admins
@@ -59,7 +59,7 @@ class ECommerceApp:
                 return False, "Invalid admin username or password."
             session_id = str(uuid.uuid4())
             self.sessions[session_id] = self.db.admins[email]
-            print(f"Admin {email} logged in successfully. Session ID: {session_id}")
+            print(f"Admin {email} logged in successfully!")
             return session_id
 
     ## To register User and/Or Admin 
@@ -75,8 +75,7 @@ class ECommerceApp:
 
         result = self.db.add_user(email, password, user_type, **kwargs)
         status, message, user = result
-        print(message)
-        return status
+        return message
     
     ## To register just admins
     def register_admin(self, email, password ):
@@ -84,12 +83,43 @@ class ECommerceApp:
         status, message, user = result
         print(message)
         return status
+
+    def must_be_admin(func):
+        def wrapper(self, session_id, *args, **kwargs):
+            print(session_id )
+            if session_id in self.sessions and isinstance(self.sessions[session_id], Admin):
+                return func(self, session_id, *args, **kwargs)
+            else:
+                # print("Admin privileges required." )
+                return False,"Admin privileges required." 
+        return wrapper
     
+    @must_be_admin
+    def add_category(self, session_id, category_name, description):
+        result = self.db.add_category(category_name, description)
+        print(result)
+
+        return result[1] # message
+    
+    @must_be_admin
+    def add_product(self, session_id, name, description, price, category, **kwargs):
+        result = self.db.add_product(name, description, price, category, **kwargs)
+        return result[1] # message 
     
 app = ECommerceApp()
 # app.load_users()
 # # print(list(app.db.users.keys()))
-print(app.register( "admin@test.com", "adminpass", user_type="admin", name="admin1" ))
+# print(app.register( "admin@test.com", "adminpass", user_type="admin", name="admin1" ))
 print(app.register( email ="user@test.com", password ="userpass", name="Carmencita" ))
 
-# app.register_admin( "admin@test.com", "adminpass")
+#Admin login
+# admin_session_id = app.login("admin@test.com", "adminpass", user_type='admin')
+# admin_session_id = app.login("admin@test.com", "adminpass", user_type='admin')
+
+# User login
+user_session_id = app.login("user@test.com", "userpass", user_type='user')
+
+# Add category as Admin
+# print(app.add_category(admin_session_id, "Home Appliances", "Everything you need for your home"))
+# Add category as User
+print(app.add_category(user_session_id, "Home Appliances", "Everything you need for your home"))
