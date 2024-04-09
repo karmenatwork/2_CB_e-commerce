@@ -41,7 +41,6 @@ class DummyEcommerceDB:
     def __init__(self):
         self.users = {}
         self.admins = {}
-        self.catalogs = {}
         self.categories = {}
         self.products = {}
         self.user_id_counter = 1
@@ -85,11 +84,6 @@ class DummyEcommerceDB:
         category_data = {"id": self.category_id_counter, "name": name, "description": description}
         categories[category_key] = category_data
         self.category_id_counter += 1
-
-        if category_key in self.catalogs:
-            self.catalogs[category_key].update(category_data)
-        else:
-            self.catalogs[category_key] = category_data
 
         # print(f"Category '{category_name}' added successfully.")
         return True , f"Category '{name}' added successfully.", categories[category_key]
@@ -136,6 +130,7 @@ db = DummyEcommerceDB()
 # print(db.add_admin("admin1@test.com", "adminpass1"))
 
 # Add category and products 
-# print(db.add_category("Home Appliances", "Everything you need to make your home comfortable")[1])
-# print(db.add_product("Lamp to relax", "Himalayan Pink Lamp", 19.99, 'home_appliances')[1])
+print(db.add_category("Home Appliances", "Everything you need to make your home comfortable")[1])
+print(db.add_product("Lamp to relax", "Himalayan Pink Lamp", 19.99, 'home_appliances')[1])
 # print(db.add_product("Lamp to relax", "Himalayan Pink Lamp", 19.99, 'home')[1])
+# print(db.categories)
