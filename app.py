@@ -37,8 +37,12 @@ class ECommerceApp:
             if user.is_admin():
                 self.db.admins[user.email] = Admin(admin_id_counter, user.email, user.password)
                 admin_id_counter += 1
+                
         self.db.user_id_counter = user_id_counter
+        self.db.admin_id_counter = admin_id_counter
+
         dbUsers_emails = self.db.users.keys()
+        
         print(f"Total demo users: {len(dbUsers_emails)} - {list(dbUsers_emails)} \n")
         print(f"Total demo admins: {list(self.db.admins.keys())} \n")
         return True
