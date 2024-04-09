@@ -51,43 +51,39 @@ class ECommerceApp:
         catalogs = load_json_file("catalog")
 
         for (category_key, category) in catalogs.items():
-            # Initialize counter    
             last_category_id = self.db.category_id_counter
-
-        #     ## Categories. Populate db.categories if empty, if not, update data. Remove key products
+            # Categories. Populate db.categories if empty, if not, update data. Remove key products
             category_data = category.copy()
             if category_data["products"]:
                 del category_data["products"]
-        #     # print(f'category_data {category_data}')
-            print(category_data)
+            # print(f'category_data: {category_data}')
 
-            status, _message, category_obj = self.db.add_category(**category_data)
+            status, message, category_obj = self.db.add_category(**category_data)
+            print(message)
             if status == False:
                 next
-            
+            # print(self.db.categories)
             ## Initialize product attributes
-            category_name = category["name"]
+            category_name = category_obj["name"]
             prodId = self.db.product_id_counter
 
-            category_products = []
             for prod_idx, product in enumerate(category["products"], start= prodId):
         #       # # Build 1 to many relationship Category <-> Products
                 product_data = {**product, **{'id': prod_idx, 'category_id': last_category_id, 'category_name': category_name }}
-                print(f"product_data => {product_data}")
+                # print(f"product_data => {product_data}")
 
                 status, message, product_obj = self.db.add_product(product["name"], product["description"], product["price"], category_key)
-                
+                print(f"{message} {product_obj} {type(product_obj)}\n")
+                # print(f"category_key:{self.db.categories[category_key]}")
+
                 if status == False:
                     next
                 
-                category_products.append(product_data)
-
-            self.db.catalogs[category_key]["products"] = category_products
-
+            
+            # self.db.catalog[category_key]["products"] = []
+            # print(self.db.categories["books"])
         # print(f"Total demo categories: {len(db.categories)} - Total demo products: {len(db.products)}\n")
-        return({'catalog': self.db.catalogs, "categories": self.db.categories, "products": self.db.products})
-
-
+        return({ "categories": self.db.categories, "products": self.db.products})
 
     def login(self, email, password, user_type='user'):
         users = self.db.users
@@ -130,7 +126,21 @@ class ECommerceApp:
         status, message, user = result
         print(message)
         return status
+    
+    def view_categories(self):
+        categories = self.db.categories
+        print(utils.print_header("View Categories"))
+        for category in categories:
+            print(f"\nCategory : {categories[category]['name']}")
+            if 'products'in categories[category]:
+                for item in categories[category]['products']:
+                    # print(item)
+                    print(f"  {item.id}: {item.name} - ${item.price}")
+            else:
+                print("  No products \n")
+        return "="* 80
 
+    # decorator
     def must_be_admin(func):
         def wrapper(self, session_id, *args, **kwargs):
             print(session_id )
@@ -159,28 +169,34 @@ app = ECommerceApp()
 print(app.register( "admin@test.com", "adminpass", user_type="admin", name="admin1" ))
 print(app.register( email ="user@test.com", password ="userpass", name="Carmencita" ))
 
-#Admin login
+# Admin login
 admin_session_id = app.login("admin@test.com", "adminpass", user_type='admin')
 
 # User login
 user_session_id = app.login("user@test.com", "userpass", user_type='user')
 
-print(utils.print_divider())
-# Add category as Admin should be valid
+# print(utils.print_divider())
+# # # Load catalog
+app.load_catalog()
+
+# # Add category as Admin should be valid
 print(app.add_category(admin_session_id, "Home Appliances", "Everything you need for your home"))
+# print(app.add_category(admin_session_id, "Books", "Healthy brain"))
 print(app.add_product(admin_session_id, "Ruby for children", "Teaching Ruby to children", 19.99, "books", author = "Carmen Diaz"))
 
-print(utils.print_divider())
-# Add category as User should be invalid
+# print(utils.print_divider())
+## Add category as User should be invalid
 print(app.add_category(user_session_id, "Home Appliances", "Everything you need for your home"))
 print(app.add_product(user_session_id, "Teach your kids to Code", "Teaching code in a fun way", 10.00, "books", author = "Carmen Diaz"))
-
-# Load catalog
-app.load_catalog()
-print(utils.print_divider())
 
 # It should keep category previously added
 print(app.db.categories.keys()) # it should be 4 keys
 print(app.add_product(admin_session_id,"Lamp to relax", "Himalayan Pink Lamp", 19.99, 'home_appliances'))
 
-print(app.db.categories["home_appliances"]) # it should now has products
+# print(app.db.categories["home_appliances"]) # it should now has products
+# print(utils.print_divider())
+# print(app.db.catalog)
+# print(utils.print_divider())
+# # print(utils.print_divider())
+print(app.view_categories())
+# print(app.db.categories == app.db.catalog)
