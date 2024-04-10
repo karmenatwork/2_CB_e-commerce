@@ -140,7 +140,49 @@ class ECommerceApp:
                 print("==No products \n")
         print("="* 80)
         return True
+    
+    # decorator
+    def must_be_user(func):
+        def wrapper(self, session_id, *args, ** kwargs):
+            if session_id not in self.sessions or isinstance(self.sessions[session_id], Admin):
+                print("User privileges required.")
+                return False
+            else:
+                return func(self, session_id, *args, **kwargs)
+        return wrapper
 
+    @must_be_user
+    def add_to_cart(self, session_id, product_id, quantity):
+        # if session_id not in self.sessions or isinstance(self.sessions[session_id], Admin):
+        #     print("User privileges required.")
+        #     return False
+        user = self.sessions[session_id]
+        if product_id not in self.db.products:
+            print("Invalid Product ID.")
+            return False
+        if product_id in user.cart:
+            user.cart[product_id] += quantity
+        else:
+            user.cart[product_id] = quantity
+        print(f"Product '{self.db.products[product_id].name}' added to cart. Quantity: {quantity}")
+        return True
+    
+    @must_be_user
+    def view_cart(self, session_id):
+        print(utils.print_header("View User cart"))
+        user = self.sessions[session_id]
+        if not user.cart:
+            print("Cart is empty.")
+            return False
+        print("Items in cart:")
+        total_amount = 0
+        for id, quantity in user.cart.items():
+            item = self.db.products[id]
+            print(f"  {item.id}: {item.name} - ${item.price} x {quantity}")
+            total_amount += item.price * quantity
+        print(f"\nTotal amount $ {total_amount}")        
+        return True
+    
     # decorator
     def must_be_admin(func):
         def wrapper(self, session_id, *args, **kwargs):
@@ -183,6 +225,7 @@ class ECommerceApp:
         print(f"Product '{product.name}' updated successfully.")
         return True
     
+    @must_be_admin
     def remove_product(self, session_id, product_id):
         if product_id not in self.db.products:
             print("Invalid Product ID.")
@@ -231,3 +274,11 @@ print(app.view_categories())
 
 # Admin updates item
 app.update_product(admin_session_id, 5, category="clothing", price=55)
+
+app.view_cart(user_session_id)
+print(utils.print_header("User adds items to cart"))
+# User adds items to cart
+app.add_to_cart(user_session_id, 1, 2)
+app.add_to_cart(user_session_id, 3, 1)
+app.add_to_cart(user_session_id, 4, 1)
+app.view_cart(user_session_id)
