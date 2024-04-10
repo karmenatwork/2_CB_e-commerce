@@ -137,7 +137,7 @@ class ECommerceApp:
                     # print(item)
                     print(f"  {item.id}: {item.name} - ${item.price}")
             else:
-                print("  No products \n")
+                print("==No products \n")
         print("="* 80)
         return True
 
