@@ -164,7 +164,21 @@ class ECommerceApp:
             user.cart[product_id] += quantity
         else:
             user.cart[product_id] = quantity
-        print(f"Product '{self.db.products[product_id].name}' added to cart. Quantity: {quantity}")
+        print(f"Item '{self.db.products[product_id].name}' added to cart. Quantity: {quantity}")
+        return True
+    
+    def remove_from_cart(self, session_id, product_id, quantity):
+        user = self.sessions[session_id]
+        if product_id not in user.cart:
+            print("Item not found in cart.")
+            return False
+        print(f"product_id {product_id}'qty: {user.cart[product_id]} qty: {quantity}")
+        print(user.cart[product_id] <= quantity)
+        if user.cart[product_id] <= quantity or quantity == 0:
+            del user.cart[product_id]
+        else:
+            user.cart[product_id] -= quantity
+        print(f"Item '{self.db.products[product_id].name}' removed from cart. Quantity removed: {quantity}")
         return True
     
     @must_be_user
@@ -280,5 +294,10 @@ print(utils.print_header("User adds items to cart"))
 # User adds items to cart
 app.add_to_cart(user_session_id, 1, 2)
 app.add_to_cart(user_session_id, 3, 1)
-app.add_to_cart(user_session_id, 4, 1)
+app.add_to_cart(user_session_id, 4, 3)
+app.view_cart(user_session_id)
+# Update quantity 
+app.remove_from_cart(user_session_id, 4, 1)
+# Remove completely from the cart
+app.remove_from_cart(user_session_id, 3, 0)
 app.view_cart(user_session_id)
