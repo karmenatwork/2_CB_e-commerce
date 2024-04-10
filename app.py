@@ -138,12 +138,12 @@ class ECommerceApp:
                     print(f"  {item.id}: {item.name} - ${item.price}")
             else:
                 print("  No products \n")
-        return "="* 80
+        print("="* 80)
+        return True
 
     # decorator
     def must_be_admin(func):
         def wrapper(self, session_id, *args, **kwargs):
-            print(session_id )
             if session_id in self.sessions and isinstance(self.sessions[session_id], Admin):
                 return func(self, session_id, *args, **kwargs)
             else:
@@ -154,7 +154,7 @@ class ECommerceApp:
     @must_be_admin
     def add_category(self, session_id, category_name, description):
         result = self.db.add_category(category_name, description)
-        print(result)
+        # print(result)
 
         return result[1] # message
     
@@ -163,6 +163,35 @@ class ECommerceApp:
         result = self.db.add_product(name, description, price, category, **kwargs)
         return result[1] # message 
     
+    @must_be_admin
+    def update_product(self, session_id, product_id, name=None, category=None, price=None):
+        if product_id not in self.db.products:
+            print("Invalid item Product ID.")
+            return False
+        product = self.db.products[product_id]
+        if name:
+            product.name = name
+        if category:
+            if category not in self.db.categories:
+                print("Invalid category.")
+                return False
+            self.db.categories[product.category]["products"].remove(product)
+            product.category = category
+            self.db.categories[category]["products"].append(product)
+        if price:
+            product.price = price
+        print(f"Product '{product.name}' updated successfully.")
+        return True
+    
+    def remove_product(self, session_id, product_id):
+        if product_id not in self.db.products:
+            print("Invalid Product ID.")
+            return False
+        product = self.db.products.pop(product_id)
+        self.db.categories[product.category]["products"].remove(product)
+        print(f"Item '{product.name}' removed successfully.")
+        return True
+
 app = ECommerceApp()
 # app.load_users()
 # # print(list(app.db.users.keys()))
@@ -199,4 +228,6 @@ print(app.add_product(admin_session_id,"Lamp to relax", "Himalayan Pink Lamp", 1
 # print(utils.print_divider())
 # # print(utils.print_divider())
 print(app.view_categories())
-# print(app.db.categories == app.db.catalog)
+
+# Admin updates item
+app.update_product(admin_session_id, 5, category="clothing", price=55)
