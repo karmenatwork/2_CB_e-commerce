@@ -104,6 +104,13 @@ class ECommerceApp:
             self.sessions[session_id] = self.db.admins[email]
             print(f"Admin {email} logged in successfully!")
             return session_id
+    
+    def logout(self, session_id):
+        if session_id in self.sessions:
+            user = self.sessions.pop(session_id)
+            print(f"{user.email} logged out.")
+        else:
+            print("Invalid session ID.")
 
     ## To register User and/Or Admin 
     def register(self, email, password, user_type="user", **kwargs):
@@ -167,13 +174,13 @@ class ECommerceApp:
         print(f"Item '{self.db.products[product_id].name}' added to cart. Quantity: {quantity}")
         return True
     
+    @must_be_user
     def remove_from_cart(self, session_id, product_id, quantity):
         user = self.sessions[session_id]
         if product_id not in user.cart:
             print("Item not found in cart.")
             return False
-        print(f"product_id {product_id}'qty: {user.cart[product_id]} qty: {quantity}")
-        print(user.cart[product_id] <= quantity)
+     
         if user.cart[product_id] <= quantity or quantity == 0:
             del user.cart[product_id]
         else:
@@ -181,10 +188,29 @@ class ECommerceApp:
         print(f"Item '{self.db.products[product_id].name}' removed from cart. Quantity removed: {quantity}")
         return True
     
+    def checkout(self, session_id, payment_method):
+        if session_id not in self.sessions or isinstance(self.sessions[session_id], Admin):
+            print("User privileges required.")
+            return False
+        user = self.sessions[session_id]
+        if not user.cart:
+            print("Cart is empty.")
+            return False
+        if payment_method not in ["Net Banking", "PayPal", "UPI", "AMEX"]:
+            print("Invalid payment method.")
+            return False
+        total_amount = sum(self.db.products[product_id].price * quantity for product_id, quantity in user.cart.items())
+        if payment_method == "UPI": 
+            print(f"You will be shortly redirected to the portal for Unified Payment Interface to make a payment of ${total_amount}")
+        else:
+            print(f"Checkout successful. Total amount: $ {total_amount}. Paid using {payment_method}.")
+        user.cart.clear()
+        return True
+    
     @must_be_user
     def view_cart(self, session_id):
-        print(utils.print_header("View User cart"))
         user = self.sessions[session_id]
+        print(utils.print_header(f"View {user.email} 's cart"))
         if not user.cart:
             print("Cart is empty.")
             return False
@@ -301,3 +327,5 @@ app.remove_from_cart(user_session_id, 4, 1)
 # Remove completely from the cart
 app.remove_from_cart(user_session_id, 3, 0)
 app.view_cart(user_session_id)
+user = app.sessions[user_session_id]
+print(f"Admin cannot add to {user.email} 's cart")
